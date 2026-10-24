@@ -1,6 +1,13 @@
-from app.core.config import get_settings
+from app.services.ingestion import load_file, chunk_documents
+from pathlib import Path
+from app.rag.vectorstore import add_documents
 
-settings = get_settings()
 
-print(f"App Name: {settings.app_name}")
-print(f"App Environment: {settings.app_env}")
+docs = load_file(Path("data/sample_kb/company_it_handbook.md"))
+print(f"Loaded {len(docs)} documents from file.")
+
+chunks = chunk_documents(docs)
+print(f"Created {len(chunks)} chunks from documents.")
+
+add_documents(chunks)
+print(f"Added {len(chunks)} chunks to the vector store.")
